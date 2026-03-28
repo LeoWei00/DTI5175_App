@@ -26,6 +26,9 @@
             android:name=".PostFoodActivity"
             android:exported="false" />
 
+        <activity android:name=".HomeActivity"
+            android:exported="false" />
+
         <activity
             android:name=".AuthActivity"
             android:exported="true">

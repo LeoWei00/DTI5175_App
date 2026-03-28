@@ -51,6 +51,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.core.ktx)
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.cardview:cardview:1.0.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
