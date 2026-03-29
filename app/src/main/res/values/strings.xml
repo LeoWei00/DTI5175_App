@@ -9,4 +9,5 @@
     <string name="password_hint">Password</string>
     <string name="create_account">Create Account</string>
     <string name="go_to_login">Already have an account? Login</string>
+
 </resources>

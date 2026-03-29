@@ -12,21 +12,21 @@
         android:padding="24dp">
 
         <TextView
-            android:id="@+id/tvAppTitle"
+            android:id="@+id/tvLoginTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create Account"
+            android:text="Welcome Back"
             android:textSize="30sp"
             android:textStyle="bold"
             android:textColor="#1F2D3D"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp" />
+            android:layout_marginTop="60dp" />
 
         <TextView
-            android:id="@+id/tvSubtitle"
+            android:id="@+id/tvLoginSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Join SharEat and start sharing"
+            android:text="Login to continue sharing meals"
             android:textSize="16sp"
             android:textColor="#6B7A78"
             android:layout_gravity="center_horizontal"
@@ -34,17 +34,7 @@
             android:layout_marginBottom="32dp" />
 
         <EditText
-            android:id="@+id/etFullName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Full Name"
-            android:inputType="textPersonName"
-            android:minHeight="52dp"
-            android:backgroundTint="#2FBF71"
-            android:layout_marginBottom="16dp" />
-
-        <EditText
-            android:id="@+id/etEmail"
+            android:id="@+id/etLoginEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
@@ -54,17 +44,7 @@
             android:layout_marginBottom="16dp" />
 
         <EditText
-            android:id="@+id/etPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone Number"
-            android:inputType="phone"
-            android:minHeight="52dp"
-            android:backgroundTint="#2FBF71"
-            android:layout_marginBottom="16dp" />
-
-        <EditText
-            android:id="@+id/etPassword"
+            android:id="@+id/etLoginPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
@@ -74,17 +54,17 @@
             android:layout_marginBottom="20dp" />
 
         <Button
-            android:id="@+id/btnCreateAccount"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create Account"
+            android:text="Login"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:backgroundTint="#2FBF71"
             android:layout_marginBottom="12dp" />
 
         <Button
-            android:id="@+id/btnGoogleSignup"
+            android:id="@+id/btnGoogleLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Continue with Google"
@@ -94,10 +74,10 @@
             android:layout_marginBottom="16dp" />
 
         <Button
-            android:id="@+id/btnGoToLogin"
+            android:id="@+id/btnGoToCreateAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Already have an account? Login"
+            android:text="Create an account"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:backgroundTint="#F7941D" />
