@@ -35,13 +35,19 @@ class FoodPostAdapter(
         holder.title.text = food.title
         holder.description.text = food.description
         holder.category.text = food.category
-        holder.meta.text = String.format(
-            "%.2f km away • %s • %s-%s",
-            nearbyFood.distanceKm,
-            food.pickup_date,
-            food.start_time,
-            food.end_time
-        )
+
+        if (nearbyFood.distanceKm >= 0) {
+            holder.meta.text = String.format(
+                "%.2f km away • %s • %s-%s",
+                nearbyFood.distanceKm,
+                food.pickup_date,
+                food.start_time,
+                food.end_time
+            )
+        } else {
+            holder.meta.text = "${food.pickup_date} • ${food.start_time}-${food.end_time}"
+        }
+
         holder.user.text = if (food.owner_name.isNotEmpty()) {
             food.owner_name
         } else {
