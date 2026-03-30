@@ -49,8 +49,10 @@ class LoginActivity : AppCompatActivity() {
             loginUser()
         }
 
+
         btnGoToCreateAccount.setOnClickListener {
-            finish()
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
         }
 
         btnGoogleLogin.setOnClickListener {
