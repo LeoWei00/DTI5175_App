@@ -14,15 +14,15 @@
         android:layout_height="72dp"
         android:orientation="horizontal"
         android:gravity="center"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
         android:background="#FFFFFF"
         android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Home -->
         <LinearLayout
+            android:id="@+id/navHomeContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -34,7 +34,7 @@
                 android:layout_height="22dp"
                 android:src="@android:drawable/ic_menu_view"
                 android:contentDescription="Home"
-                app:tint="#23C483"/>
+                app:tint="#23C483" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -42,10 +42,12 @@
                 android:text="Home"
                 android:textSize="12sp"
                 android:textColor="#23C483"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
+        <!-- Post -->
         <LinearLayout
+            android:id="@+id/navPostContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -53,21 +55,24 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/navPost"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:src="@android:drawable/ic_input_add"
                 android:contentDescription="Post"
-                app:tint="#7A8A86"/>
+                app:tint="#7A8A86" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Post"
                 android:textSize="12sp"
-                android:textColor="#7A8A86"/>
+                android:textColor="#7A8A86" />
         </LinearLayout>
 
+        <!-- Chat -->
         <LinearLayout
+            android:id="@+id/navChatContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -79,17 +84,19 @@
                 android:layout_height="22dp"
                 android:src="@android:drawable/ic_dialog_email"
                 android:contentDescription="Chat"
-                app:tint="#7A8A86"/>
+                app:tint="#7A8A86" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chat"
                 android:textSize="12sp"
-                android:textColor="#7A8A86"/>
+                android:textColor="#7A8A86" />
         </LinearLayout>
 
+        <!-- Profile -->
         <LinearLayout
+            android:id="@+id/navProfileContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -101,15 +108,16 @@
                 android:layout_height="22dp"
                 android:src="@android:drawable/ic_menu_manage"
                 android:contentDescription="Profile"
-                app:tint="#7A8A86"/>
+                app:tint="#7A8A86" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Profile"
                 android:textSize="12sp"
-                android:textColor="#7A8A86"/>
+                android:textColor="#7A8A86" />
         </LinearLayout>
+
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -145,7 +153,7 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:background="@android:drawable/edit_text"
-                    android:minHeight="48dp"/>
+                    android:minHeight="48dp" />
 
                 <ImageButton
                     android:id="@+id/filterButton"
@@ -154,7 +162,7 @@
                     android:layout_marginStart="8dp"
                     android:background="@android:color/transparent"
                     android:src="@android:drawable/ic_menu_sort_by_size"
-                    android:contentDescription="Filter"/>
+                    android:contentDescription="Filter" />
             </LinearLayout>
 
             <!-- Category chips -->
@@ -177,7 +185,7 @@
                         android:textAllCaps="false"
                         android:textColor="#FFFFFF"
                         android:backgroundTint="#23C483"
-                        android:minHeight="40dp"/>
+                        android:minHeight="40dp" />
 
                     <Button
                         android:id="@+id/chipHomemade"
@@ -188,7 +196,7 @@
                         android:textAllCaps="false"
                         android:textColor="#33413D"
                         android:backgroundTint="#F3F5F4"
-                        android:minHeight="40dp"/>
+                        android:minHeight="40dp" />
 
                     <Button
                         android:id="@+id/chipVegetarian"
@@ -199,7 +207,7 @@
                         android:textAllCaps="false"
                         android:textColor="#33413D"
                         android:backgroundTint="#F3F5F4"
-                        android:minHeight="40dp"/>
+                        android:minHeight="40dp" />
 
                     <Button
                         android:id="@+id/chipBakedGoods"
@@ -210,7 +218,7 @@
                         android:textAllCaps="false"
                         android:textColor="#33413D"
                         android:backgroundTint="#F3F5F4"
-                        android:minHeight="40dp"/>
+                        android:minHeight="40dp" />
 
                     <Button
                         android:id="@+id/chipVegan"
@@ -221,89 +229,9 @@
                         android:textAllCaps="false"
                         android:textColor="#33413D"
                         android:backgroundTint="#F3F5F4"
-                        android:minHeight="40dp"/>
+                        android:minHeight="40dp" />
                 </LinearLayout>
             </HorizontalScrollView>
-
-            <!-- Stats -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="#EAF6F1"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:weightSum="3">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="847"
-                        android:textColor="#23C483"
-                        android:textSize="28sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Meals Shared"
-                        android:textColor="#63706C"
-                        android:textSize="13sp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="312"
-                        android:textColor="#FF8A3D"
-                        android:textSize="28sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Active Donors"
-                        android:textColor="#63706C"
-                        android:textSize="13sp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="156"
-                        android:textColor="#17B7A0"
-                        android:textSize="28sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Nearby Now"
-                        android:textColor="#63706C"
-                        android:textSize="13sp"/>
-                </LinearLayout>
-            </LinearLayout>
 
             <!-- Section title -->
             <LinearLayout
@@ -320,314 +248,24 @@
                     android:text="Available Near You"
                     android:textColor="#1E2B27"
                     android:textSize="24sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvMealCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3 meals"
+                    android:text="0 meals"
                     android:textColor="#63706C"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
             </LinearLayout>
 
-            <!-- Food cards row -->
-            <HorizontalScrollView
+            <!-- Vertical RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerFoods"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Card 1 -->
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardPasta"
-                        android:layout_width="210dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <FrameLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="150dp">
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="centerCrop"
-                                    android:src="@android:drawable/ic_menu_gallery"
-                                    android:contentDescription="Pasta image"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:background="#F4F6F5"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="4dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingBottom="4dp"
-                                    android:text="Homemade"
-                                    android:textColor="#24312D"
-                                    android:textSize="12sp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="end|top"
-                                    android:layout_margin="10dp"
-                                    android:background="#23C483"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="4dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingBottom="4dp"
-                                    android:text="$5.00"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"/>
-                            </FrameLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="12dp">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Homemade Pasta Primavera"
-                                    android:textColor="#1E2B27"
-                                    android:textSize="22sp"
-                                    android:textStyle="bold"/>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="6dp"
-                                    android:text="Fresh vegetable pasta with tomato sauce, 2 portions available"
-                                    android:textColor="#63706C"
-                                    android:textSize="14sp"/>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:text="0.3 mi   •   Today, 6-8 PM"
-                                    android:textColor="#23C483"
-                                    android:textSize="13sp"/>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:text="Sarah Chen"
-                                    android:textColor="#24312D"
-                                    android:textSize="14sp"/>
-                            </LinearLayout>
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Card 2 -->
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardBowl"
-                        android:layout_width="210dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <FrameLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="150dp">
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="centerCrop"
-                                    android:src="@android:drawable/ic_menu_gallery"
-                                    android:contentDescription="Bowl image"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:background="#F4F6F5"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="4dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingBottom="4dp"
-                                    android:text="Vegetarian"
-                                    android:textColor="#24312D"
-                                    android:textSize="12sp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="end|top"
-                                    android:layout_margin="10dp"
-                                    android:background="#23C483"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="4dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingBottom="4dp"
-                                    android:text="FREE"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"/>
-                            </FrameLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="12dp">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Vegan Buddha Bowl"
-                                    android:textColor="#1E2B27"
-                                    android:textSize="22sp"
-                                    android:textStyle="bold"/>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="6dp"
-                                    android:text="Quinoa, roasted veggies, avocado - healthy and delicious!"
-                                    android:textColor="#63706C"
-                                    android:textSize="14sp"/>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:text="0.5 mi   •   Today, 5-7 PM"
-                                    android:textColor="#23C483"
-                                    android:textSize="13sp"/>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:text="Mike Johnson"
-                                    android:textColor="#24312D"
-                                    android:textSize="14sp"/>
-                            </LinearLayout>
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Card 3 -->
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardBread"
-                        android:layout_width="210dp"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <FrameLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="150dp">
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="centerCrop"
-                                    android:src="@android:drawable/ic_menu_gallery"
-                                    android:contentDescription="Bread image"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:background="#F4F6F5"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="4dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingBottom="4dp"
-                                    android:text="Baked Goods"
-                                    android:textColor="#24312D"
-                                    android:textSize="12sp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="end|top"
-                                    android:layout_margin="10dp"
-                                    android:background="#23C483"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="4dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingBottom="4dp"
-                                    android:text="$3.00"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"/>
-                            </FrameLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="12dp">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Fresh Baked Sourdough"
-                                    android:textColor="#1E2B27"
-                                    android:textSize="22sp"
-                                    android:textStyle="bold"/>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="6dp"
-                                    android:text="Just baked this morning, 3 loaves available"
-                                    android:textColor="#63706C"
-                                    android:textSize="14sp"/>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:text="0.8 mi   •   Tomorrow, 9-11 AM"
-                                    android:textColor="#23C483"
-                                    android:textSize="13sp"/>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:text="Emma Baker"
-                                    android:textColor="#24312D"
-                                    android:textSize="14sp"/>
-                            </LinearLayout>
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
-            </HorizontalScrollView>
+                android:nestedScrollingEnabled="false" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

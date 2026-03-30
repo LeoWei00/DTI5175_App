@@ -2,7 +2,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="#F8FAF8">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,269 +12,558 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Donate / Sell -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="What would you like to do?"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
-
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
-
-            <RadioButton
-                android:id="@+id/radioDonate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:paddingVertical="8dp"
-                android:text="Donate"/>
-
-            <RadioButton
-                android:id="@+id/radioSell"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:paddingVertical="8dp"
-                android:text="Sell"/>
-        </RadioGroup>
-
-        <!-- Photo Upload -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Photo"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"/>
-
-        <ImageView
-            android:id="@+id/foodImage"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_marginTop="8dp"
-            android:background="#EEEEEE"
-            android:scaleType="centerInside"
-            android:src="@android:drawable/ic_menu_camera"/>
-
-        <!-- Food Details -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Food Details"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_marginTop="20dp"/>
-
-        <EditText
-            android:id="@+id/mealName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:hint="Meal Name"
-            android:inputType="text"
-            android:layout_marginTop="8dp"/>
-
-        <EditText
-            android:id="@+id/category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:hint="Category"
-            android:layout_marginTop="8dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Food Description"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
-
+        <!-- WHAT WOULD YOU LIKE TO DO -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
 
-            <EditText
-                android:id="@+id/foodDescription"
-                android:layout_width="0dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minHeight="48dp"
-                android:hint="Describe the food..."
-                android:inputType="textMultiLine"
-                android:maxLines="4"/>
+                android:text="What would you like to do?"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#1F2D3D" />
 
-            <ImageButton
-                android:id="@+id/speechButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@android:drawable/ic_btn_speak_now"
-                android:contentDescription="Speech input"/>
+            <RadioGroup
+                android:id="@+id/postTypeGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <RadioButton
+                    android:id="@+id/radioDonate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Donate"
+                    android:textColor="#1F2D3D"
+                    android:buttonTint="#2FBF71"
+                    android:layout_marginEnd="24dp" />
+
+                <RadioButton
+                    android:id="@+id/radioSell"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sell"
+                    android:textColor="#1F2D3D"
+                    android:buttonTint="#2FBF71" />
+            </RadioGroup>
         </LinearLayout>
 
-        <!-- Allergens -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Allergen Information"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
-
-        <CheckBox
-            android:id="@+id/allergenDairy"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="Dairy"/>
-
-        <CheckBox
-            android:id="@+id/allergenGluten"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:paddingVertical="8dp"
-            android:text="Gluten"/>
-
-        <CheckBox
-            android:id="@+id/allergenEggs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:paddingVertical="8dp"
-            android:text="Eggs"/>
-
-        <CheckBox
-            android:id="@+id/allergenNuts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:paddingVertical="8dp"
-            android:text="Nuts"/>
-
-        <!-- Dietary Labels -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dietary Labels"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
-
-        <CheckBox
-            android:id="@+id/veg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:paddingVertical="8dp"
-            android:text="Vegetarian"/>
-
-        <CheckBox
-            android:id="@+id/vegan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:paddingVertical="8dp"
-            android:text="Vegan"/>
-
-        <CheckBox
-            android:id="@+id/glutenFree"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:paddingVertical="8dp"
-            android:text="Gluten Free"/>
-
-        <!-- Quantity -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quantity"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
-
-        <EditText
-            android:id="@+id/quantity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:paddingVertical="8dp"
-            android:inputType="number"
-            android:hint="1"/>
-
-        <!-- Unit -->
-        <Spinner
-            android:id="@+id/unitSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:layout_marginTop="8dp"/>
-
-        <!-- Pickup Info -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pickup Information"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"/>
-
+        <!-- PHOTO UPLOAD -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
 
-            <EditText
-                android:id="@+id/location"
-                android:layout_width="0dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minHeight="48dp"
-                android:paddingVertical="8dp"
-                android:hint="Pickup Location"
-                android:inputType="textPostalAddress"/>
+                android:text="Food Photo"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#1F2D3D" />
 
-            <ImageButton
-                android:id="@+id/locationPicker"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@android:drawable/ic_menu_mylocation"
-                android:contentDescription="Select location"/>
+            <ImageView
+                android:id="@+id/foodImage"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="12dp"
+                android:background="#EEF6F1"
+                android:padding="24dp"
+                android:scaleType="centerInside"
+                android:src="@android:drawable/ic_menu_camera"
+                android:contentDescription="Upload food image" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click to upload or drag and drop"
+                android:textColor="#6B7A78"
+                android:textSize="14sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp" />
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/pickupDate"
+        <!-- FOOD DETAILS -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:paddingVertical="8dp"
-            android:hint="Pickup Date"
-            android:inputType="date"/>
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
 
-        <EditText
-            android:id="@+id/startTime"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Food Details"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#1F2D3D"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Meal Name -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meal Name *"
+                android:textStyle="bold"
+                android:textColor="#1F2D3D"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/mealName"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="e.g., Homemade Lasagna"
+                android:inputType="text"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#DDE9E1" />
+
+            <!-- Category -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category *"
+                android:textStyle="bold"
+                android:textColor="#1F2D3D"
+                android:layout_marginBottom="6dp" />
+
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#DDE9E1" />
+
+            <!-- Description -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description *"
+                android:textStyle="bold"
+                android:textColor="#1F2D3D"
+                android:layout_marginBottom="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <EditText
+                    android:id="@+id/foodDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:gravity="top|start"
+                    android:hint="Brief description of the meal..."
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"
+                    android:minLines="4"
+                    android:padding="14dp"
+                    android:backgroundTint="#DDE9E1" />
+
+                <ImageButton
+                    android:id="@+id/speechButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="bottom"
+                    android:src="@android:drawable/ic_btn_speak_now"
+                    android:background="#EEF6F1"
+                    android:contentDescription="Speech input" />
+            </LinearLayout>
+
+            <!-- Ingredients -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingredients"
+                android:textStyle="bold"
+                android:textColor="#1F2D3D"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="e.g., Pasta, tomatoes, cheese..."
+                android:inputType="text"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#DDE9E1" />
+
+            <!-- Allergens -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Allergen Information *"
+                android:textStyle="bold"
+                android:textColor="#1F2D3D"
+                android:layout_marginBottom="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/allergenDairy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dairy"
+                        android:buttonTint="#2FBF71" />
+
+                    <CheckBox
+                        android:id="@+id/allergenGluten"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gluten"
+                        android:buttonTint="#2FBF71" />
+
+                    <CheckBox
+                        android:id="@+id/allergenEggs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Eggs"
+                        android:buttonTint="#2FBF71" />
+
+                    <CheckBox
+                        android:id="@+id/allergenShellfish"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Shellfish"
+                        android:buttonTint="#2FBF71" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/allergenNuts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nuts"
+                        android:buttonTint="#2FBF71" />
+
+                    <CheckBox
+                        android:id="@+id/allergenSoy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Soy"
+                        android:buttonTint="#2FBF71" />
+
+                    <CheckBox
+                        android:id="@+id/allergenFish"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fish"
+                        android:buttonTint="#2FBF71" />
+
+                    <CheckBox
+                        android:id="@+id/allergenSesame"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sesame"
+                        android:buttonTint="#2FBF71" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Dietary Labels -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dietary Labels"
+                android:textStyle="bold"
+                android:textColor="#1F2D3D"
+                android:layout_marginBottom="10dp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/veg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vegetarian"
+                        android:buttonTint="#2FBF71" />
+
+                    <CheckBox
+                        android:id="@+id/vegan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vegan"
+                        android:buttonTint="#2FBF71" />
+
+                    <CheckBox
+                        android:id="@+id/glutenFree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gluten-Free"
+                        android:buttonTint="#2FBF71" />
+
+                    <CheckBox
+                        android:id="@+id/halal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Halal"
+                        android:buttonTint="#2FBF71" />
+
+                    <CheckBox
+                        android:id="@+id/kosher"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kosher"
+                        android:buttonTint="#2FBF71" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Quantity + Unit -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="4dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Quantity *"
+                        android:textStyle="bold"
+                        android:textColor="#1F2D3D"
+                        android:layout_marginBottom="6dp" />
+
+                    <EditText
+                        android:id="@+id/quantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:hint="1"
+                        android:inputType="number"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:backgroundTint="#DDE9E1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Unit *"
+                        android:textStyle="bold"
+                        android:textColor="#1F2D3D"
+                        android:layout_marginBottom="6dp" />
+
+                    <Spinner
+                        android:id="@+id/unitSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:backgroundTint="#DDE9E1" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- PICKUP INFORMATION -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Start Time"
-            android:inputType="time"/>
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
 
-        <EditText
-            android:id="@+id/endTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="End Time"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pickup Information"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#1F2D3D"
+                android:layout_marginBottom="16dp" />
 
-        <!-- Submit Button -->
+            <!-- Pickup Location -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pickup Location *"
+                android:textStyle="bold"
+                android:textColor="#1F2D3D"
+                android:layout_marginBottom="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <EditText
+                    android:id="@+id/location"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    android:hint="e.g., Campus Housing Building A"
+                    android:inputType="textPostalAddress"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:backgroundTint="#DDE9E1" />
+
+                <ImageButton
+                    android:id="@+id/locationPicker"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@android:drawable/ic_menu_mylocation"
+                    android:background="#EEF6F1"
+                    android:contentDescription="Select location" />
+            </LinearLayout>
+
+            <!-- Pickup Date -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pickup Date *"
+                android:textStyle="bold"
+                android:textColor="#1F2D3D"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/pickupDate"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="Pick a date"
+                android:inputType="date"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#DDE9E1"
+                android:focusable="false"
+                android:clickable="true"
+                />
+
+
+            <!-- Start + End Time -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Start Time *"
+                        android:textStyle="bold"
+                        android:textColor="#1F2D3D"
+                        android:layout_marginBottom="6dp" />
+
+                    <EditText
+                        android:id="@+id/startTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:hint="--:-- --"
+                        android:inputType="time"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:backgroundTint="#DDE9E1"
+                        android:focusable="false"
+                        android:clickable="true"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="End Time *"
+                        android:textStyle="bold"
+                        android:textColor="#1F2D3D"
+                        android:layout_marginBottom="6dp" />
+
+                    <EditText
+                        android:id="@+id/endTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:hint="--:-- --"
+                        android:inputType="time"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:backgroundTint="#DDE9E1"
+                        android:focusable="false"
+                        android:clickable="true"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- POST BUTTON -->
         <Button
             android:id="@+id/postDonation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Post Donation"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="#2EAF6D"
-            android:textColor="#FFFFFF"/>
+            android:layout_height="56dp"
+            android:text="🎁 Post Donation"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2FBF71"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp" />
 
     </LinearLayout>
-
 </ScrollView>
