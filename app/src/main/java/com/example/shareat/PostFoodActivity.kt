@@ -225,6 +225,7 @@ class PostFoodActivity : AppCompatActivity() {
             val meal = mealName.text.toString().trim()
             val selectedCategory = categorySpinner.selectedItem.toString()
             val description = foodDescription.text.toString().trim()
+            val ingredientsText = ingredients.text.toString().trim()
             val qtyText = quantity.text.toString().trim()
             val unit = unitSpinner.selectedItem.toString()
             val pickupLocation = location.text.toString().trim()
@@ -309,6 +310,7 @@ class PostFoodActivity : AppCompatActivity() {
                 "owner_name" to ownerName,
                 "title" to meal,
                 "description" to description,
+                "ingredients" to ingredientsText,
                 "category" to selectedCategory,
                 "quantity" to qty,
                 "unit" to unit,

@@ -7,6 +7,7 @@ data class FoodPost(
     val image_url: String = "",
     val title: String = "",
     val description: String = "",
+    val ingredients: String = "",
     val category: String = "",
     val quantity: Int = 0,
     val unit: String = "",

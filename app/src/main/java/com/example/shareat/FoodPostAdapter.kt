@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 class FoodPostAdapter(
-    private val foodList: List<FoodPost>
+    private val foodList: List<NearbyFoodPost>
 ) : RecyclerView.Adapter<FoodPostAdapter.FoodViewHolder>() {
 
     class FoodViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -29,12 +29,19 @@ class FoodPostAdapter(
     }
 
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
-        val food = foodList[position]
+        val nearbyFood = foodList[position]
+        val food = nearbyFood.post
 
         holder.title.text = food.title
         holder.description.text = food.description
         holder.category.text = food.category
-        holder.meta.text = "${food.pickup_date} • ${food.start_time}-${food.end_time}"
+        holder.meta.text = String.format(
+            "%.2f km away • %s • %s-%s",
+            nearbyFood.distanceKm,
+            food.pickup_date,
+            food.start_time,
+            food.end_time
+        )
         holder.user.text = if (food.owner_name.isNotEmpty()) {
             food.owner_name
         } else {
@@ -58,6 +65,7 @@ class FoodPostAdapter(
             intent.putExtra("USER_NAME", if (food.owner_name.isNotEmpty()) food.owner_name else food.owner_id)
             intent.putExtra("CATEGORY", food.category)
             intent.putExtra("DESCRIPTION", food.description)
+            intent.putExtra("INGREDIENTS", food.ingredients)
             intent.putExtra("QUANTITY", food.quantity.toString())
             intent.putExtra("UNIT", food.unit)
             intent.putExtra("ALLERGENS", food.allergen_information.joinToString(", "))
