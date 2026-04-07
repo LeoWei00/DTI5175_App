@@ -66,7 +66,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         navChatContainer.setOnClickListener {
-            startActivity(Intent(this, PostFoodActivity::class.java))
+            startActivity(Intent(this, MessagesActivity::class.java))
         }
 
         navProfileContainer.setOnClickListener {

@@ -116,10 +116,14 @@ class ChatActivity : AppCompatActivity() {
         db.collection("chats")
             .document(chatId)
             .collection("messages")
-            .orderBy("sent_at", Query.Direction.ASCENDING)
+            .orderBy("sent_at", com.google.firebase.firestore.Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Toast.makeText(this, "Error loading messages", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "Error loading messages: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
                     return@addSnapshotListener
                 }
 

@@ -169,8 +169,15 @@ class FoodDetailActivity : AppCompatActivity() {
             val ownerName = intent.getStringExtra("USER_NAME") ?: "User"
             val postTitle = intent.getStringExtra("FOOD_NAME") ?: "Meal"
 
+            val currentUserId = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: ""
+
             if (ownerId.isEmpty() || postId.isEmpty()) {
                 Toast.makeText(this, "Missing chat info", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (ownerId == currentUserId) {
+                Toast.makeText(this, "You cannot chat with yourself", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

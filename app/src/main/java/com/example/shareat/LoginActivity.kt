@@ -32,6 +32,13 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
+        // 🔥 Si l'utilisateur est déjà connecté → HomeActivity
+        if (auth.currentUser != null) {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+            return
+        }
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -49,9 +56,8 @@ class LoginActivity : AppCompatActivity() {
             loginUser()
         }
 
-
         btnGoToCreateAccount.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, AuthActivity::class.java)
             startActivity(intent)
         }
 
@@ -98,10 +104,10 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
 
-                    // Ici plus tard on pourra rediriger vers HomeActivity
-                    // val intent = Intent(this, HomeActivity::class.java)
-                    // startActivity(intent)
-                    // finish()
+                    // 🔥 Redirection vers HomeActivity
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
 
                 } else {
                     Toast.makeText(
@@ -134,10 +140,10 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show()
 
-                    // Ici plus tard on pourra rediriger vers HomeActivity
-                    // val intent = Intent(this, HomeActivity::class.java)
-                    // startActivity(intent)
-                    // finish()
+                    // 🔥 Redirection vers HomeActivity
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
 
                 } else {
                     Toast.makeText(
