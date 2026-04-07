@@ -3,22 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="#F8FAF8">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- ============================================ -->
-        <!-- FOOD IMAGE - Full width at top               -->
-        <!-- ============================================ -->
         <ImageView
             android:id="@+id/foodDetailImage"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="260dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/shareat_placeholder" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,9 +23,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- ============================================ -->
-            <!-- FOOD NAME + TYPE BADGE  (side by side)       -->
-            <!-- ============================================ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -36,18 +30,16 @@
                 android:gravity="center_vertical"
                 android:layout_marginBottom="8dp">
 
-                <!-- Food Name -->
                 <TextView
                     android:id="@+id/foodDetailName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Pasta Carbonara"
-                    android:textSize="24sp"
+                    android:textSize="26sp"
                     android:textStyle="bold"
-                    android:textColor="#212121" />
+                    android:textColor="#1E2B27" />
 
-                <!-- Type Badge (Donate/Sell) -->
                 <TextView
                     android:id="@+id/foodDetailType"
                     android:layout_width="wrap_content"
@@ -62,36 +54,27 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:layout_marginStart="8dp" />
-
             </LinearLayout>
 
-            <!-- ============================================ -->
-            <!-- POSTED BY USER                               -->
-            <!-- ============================================ -->
             <TextView
                 android:id="@+id/postedByUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Posted by: John Doe"
                 android:textSize="14sp"
-                android:textColor="#757575"
+                android:textColor="#63706C"
                 android:layout_marginBottom="6dp" />
 
-            <!-- ============================================ -->
-            <!-- CATEGORY                                     -->
-            <!-- ============================================ -->
             <TextView
                 android:id="@+id/foodDetailCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Category: Italian"
                 android:textSize="14sp"
-                android:textColor="#757575"
-                android:layout_marginBottom="6dp" />
+                android:textColor="#23C483"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp" />
 
-            <!-- ============================================ -->
-            <!-- DESCRIPTION                                  -->
-            <!-- ============================================ -->
             <TextView
                 android:id="@+id/foodDetailDescription"
                 android:layout_width="match_parent"
@@ -102,20 +85,14 @@
                 android:lineSpacingExtra="4dp"
                 android:layout_marginBottom="16dp" />
 
-            <!-- ============================================ -->
-            <!-- INFO CARD: Quantity + Allergens + Diet       -->
-            <!-- All three inside ONE smooth rounded card     -->
-            <!-- ============================================ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/info_background"
                 android:padding="16dp"
-                android:elevation="2dp"
                 android:layout_marginBottom="16dp">
 
-                <!-- - QUANTITY ROW - -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -146,17 +123,14 @@
                         android:text="5 servings"
                         android:textSize="14sp"
                         android:textColor="#616161" />
-
                 </LinearLayout>
 
-                <!-- - DIVIDER LINE - -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#E0E0E0"
                     android:layout_marginBottom="12dp" />
 
-                <!-- - ALLERGEN ROW - -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -164,7 +138,6 @@
                     android:gravity="center_vertical"
                     android:layout_marginBottom="12dp">
 
-                    <!-- Warning Symbol -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -188,17 +161,14 @@
                         android:text="Dairy, Gluten, Eggs"
                         android:textSize="14sp"
                         android:textColor="#D32F2F" />
-
                 </LinearLayout>
 
-                <!-- - DIVIDER LINE - -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#E0E0E0"
                     android:layout_marginBottom="12dp" />
 
-                <!-- - DIETARY ROW - -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -228,24 +198,17 @@
                         android:text="Vegetarian"
                         android:textSize="14sp"
                         android:textColor="#388E3C" />
-
                 </LinearLayout>
-
             </LinearLayout>
 
-            <!-- ============================================ -->
-            <!-- PICKUP INFO                                  -->
-            <!-- ============================================ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/info_background"
                 android:padding="16dp"
-                android:elevation="2dp"
                 android:layout_marginBottom="16dp">
 
-                <!-- Location Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -267,17 +230,14 @@
                         android:text="123 Main Street, Toronto"
                         android:textSize="14sp"
                         android:textColor="#424242" />
-
                 </LinearLayout>
 
-                <!-- Divider -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#E0E0E0"
                     android:layout_marginBottom="12dp" />
 
-                <!-- Pickup Time Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -298,14 +258,9 @@
                         android:text="Jan 20, 10:00 AM - 2:00 PM"
                         android:textSize="14sp"
                         android:textColor="#424242" />
-
                 </LinearLayout>
-
             </LinearLayout>
 
-            <!-- ============================================ -->
-            <!-- MAP BUTTONS                                  -->
-            <!-- ============================================ -->
             <Button
                 android:id="@+id/viewOnMapButton"
                 android:layout_width="match_parent"
@@ -323,27 +278,26 @@
                 android:text="🧭  Get Directions"
                 android:textSize="16sp"
                 android:textColor="#FFFFFF"
-                android:background="@drawable/button_blue"
+                android:background="@drawable/button_green"
                 android:layout_marginBottom="16dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="12dp">
 
-                <!-- Chat Button -->
                 <Button
                     android:id="@+id/chatButton"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:text="💬 Chat"
+                    android:text="✉️ Message"
                     android:textSize="14sp"
                     android:textColor="#FFFFFF"
-                    android:backgroundTint="#9C27B0"
+                    android:backgroundTint="#23C483"
                     android:layout_marginEnd="4dp" />
 
-                <!-- Call Button -->
                 <Button
                     android:id="@+id/callButton"
                     android:layout_width="0dp"
@@ -352,11 +306,10 @@
                     android:text="📞 Call"
                     android:textSize="14sp"
                     android:textColor="#FFFFFF"
-                    android:backgroundTint="#FF5722"
+                    android:backgroundTint="#FF8A3D"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp" />
 
-                <!-- SMS Button -->
                 <Button
                     android:id="@+id/smsButton"
                     android:layout_width="0dp"
@@ -367,10 +320,8 @@
                     android:textColor="#FFFFFF"
                     android:backgroundTint="#607D8B"
                     android:layout_marginStart="4dp" />
-
             </LinearLayout>
 
-            <!-- RESERVE BUTTON -->
             <Button
                 android:id="@+id/reserveButton"
                 android:layout_width="match_parent"
@@ -379,10 +330,9 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#FF9800"
+                android:backgroundTint="#23C483"
                 android:layout_marginBottom="16dp" />
 
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>

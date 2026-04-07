@@ -20,6 +20,7 @@ class FoodPostAdapter(
         val meta: TextView = itemView.findViewById(R.id.tvMeta)
         val user: TextView = itemView.findViewById(R.id.tvUser)
         val image: ImageView = itemView.findViewById(R.id.imgFood)
+        val reservedChip: TextView = itemView.findViewById(R.id.tvReservedChip)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodViewHolder {
@@ -35,7 +36,6 @@ class FoodPostAdapter(
         holder.title.text = food.title
         holder.description.text = food.description
         holder.category.text = food.category
-
         if (nearbyFood.distanceKm >= 0) {
             holder.meta.text = String.format(
                 "%.2f km away • %s • %s-%s",
@@ -54,6 +54,9 @@ class FoodPostAdapter(
             food.owner_id
         }
 
+        holder.reservedChip.visibility =
+            if (food.status.equals("reserved", ignoreCase = true)) View.VISIBLE else View.GONE
+
         if (food.image_url.isNotEmpty()) {
             Glide.with(holder.itemView.context)
                 .load(food.image_url)
@@ -67,6 +70,7 @@ class FoodPostAdapter(
             val context = holder.itemView.context
             val intent = Intent(context, FoodDetailActivity::class.java)
 
+            intent.putExtra("POST_ID", food.post_id)
             intent.putExtra("FOOD_NAME", food.title)
             intent.putExtra("USER_NAME", if (food.owner_name.isNotEmpty()) food.owner_name else food.owner_id)
             intent.putExtra("CATEGORY", food.category)
@@ -82,12 +86,12 @@ class FoodPostAdapter(
             intent.putExtra("END_TIME", food.end_time)
             intent.putExtra("TYPE", food.post_type)
             intent.putExtra("IMAGE_URL", food.image_url)
+            intent.putExtra("STATUS", food.status)
+            intent.putExtra("OWNER_ID", food.owner_id)
 
             context.startActivity(intent)
         }
     }
 
-    override fun getItemCount(): Int {
-        return foodList.size
-    }
+    override fun getItemCount(): Int = foodList.size
 }

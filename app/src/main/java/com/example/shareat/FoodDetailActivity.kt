@@ -9,6 +9,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class FoodDetailActivity : AppCompatActivity() {
 
@@ -32,6 +34,8 @@ class FoodDetailActivity : AppCompatActivity() {
 
     private var pickupLocation: String = ""
     private var ownerPhone: String = ""
+    private var postId: String = ""
+    private var currentStatus: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +72,7 @@ class FoodDetailActivity : AppCompatActivity() {
     }
 
     private fun loadFoodDetails() {
+        postId = intent.getStringExtra("POST_ID") ?: ""
         val foodName = intent.getStringExtra("FOOD_NAME") ?: "Unknown"
         val userName = intent.getStringExtra("USER_NAME") ?: "Unknown"
         val category = intent.getStringExtra("CATEGORY") ?: ""
@@ -80,21 +85,16 @@ class FoodDetailActivity : AppCompatActivity() {
         val pickupDate = intent.getStringExtra("PICKUP_DATE") ?: ""
         val startTime = intent.getStringExtra("START_TIME") ?: ""
         val endTime = intent.getStringExtra("END_TIME") ?: ""
-        val type = intent.getStringExtra("TYPE") ?: "Donate"
         val phone = intent.getStringExtra("PHONE") ?: ""
         val imageUrl = intent.getStringExtra("IMAGE_URL") ?: ""
+        currentStatus = intent.getStringExtra("STATUS") ?: "available"
 
         ownerPhone = phone
         pickupLocation = location
 
         foodDetailName.text = foodName
-        foodDetailType.text = type
-
-        if (type.equals("Sell", ignoreCase = true)) {
-            foodDetailType.setBackgroundResource(R.drawable.badge_sell)
-        } else {
-            foodDetailType.setBackgroundResource(R.drawable.badge_background)
-        }
+        foodDetailType.text = "Donate"
+        foodDetailType.setBackgroundResource(R.drawable.badge_background)
 
         postedByUser.text = "Posted by: $userName"
         foodDetailCategory.text = "Category: $category"
@@ -113,6 +113,11 @@ class FoodDetailActivity : AppCompatActivity() {
         } else {
             foodDetailImage.setImageResource(R.drawable.shareat_placeholder)
         }
+
+        if (currentStatus.equals("reserved", ignoreCase = true)) {
+            reserveButton.text = "✅ Already Reserved"
+            reserveButton.isEnabled = false
+        }
     }
 
     private fun setupMapButton() {
@@ -120,62 +125,68 @@ class FoodDetailActivity : AppCompatActivity() {
             if (pickupLocation.isNotEmpty()) {
                 val mapUri = Uri.parse("geo:0,0?q=${Uri.encode(pickupLocation)}")
                 val mapIntent = Intent(Intent.ACTION_VIEW, mapUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
 
                 if (mapIntent.resolveActivity(packageManager) != null) {
                     startActivity(mapIntent)
                 } else {
-                    Toast.makeText(
-                        this,
-                        "Google Maps is not installed",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val webUri = Uri.parse(
+                        "https://www.google.com/maps/search/?api=1&query=${Uri.encode(pickupLocation)}"
+                    )
+                    val webIntent = Intent(Intent.ACTION_VIEW, webUri)
+                    startActivity(webIntent)
                 }
             } else {
-                Toast.makeText(
-                    this,
-                    "No location available",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "No location available", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
+
     private fun setupDirectionsButton() {
         getDirectionsButton.setOnClickListener {
             if (pickupLocation.isNotEmpty()) {
-                val directionUri = Uri.parse("google.navigation:q=${Uri.encode(pickupLocation)}")
-                val directionIntent = Intent(Intent.ACTION_VIEW, directionUri)
-                directionIntent.setPackage("com.google.android.apps.maps")
+                val navUri = Uri.parse("google.navigation:q=${Uri.encode(pickupLocation)}")
+                val navIntent = Intent(Intent.ACTION_VIEW, navUri)
 
-                if (directionIntent.resolveActivity(packageManager) != null) {
-                    startActivity(directionIntent)
+                if (navIntent.resolveActivity(packageManager) != null) {
+                    startActivity(navIntent)
                 } else {
-                    Toast.makeText(
-                        this,
-                        "Google Maps is not installed",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val webUri = Uri.parse(
+                        "https://www.google.com/maps/dir/?api=1&destination=${Uri.encode(pickupLocation)}"
+                    )
+                    val webIntent = Intent(Intent.ACTION_VIEW, webUri)
+                    startActivity(webIntent)
                 }
             } else {
-                Toast.makeText(
-                    this,
-                    "No location available",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "No location available", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun setupChatButton() {
         chatButton.setOnClickListener {
-            val userName = intent.getStringExtra("USER_NAME") ?: "this user"
+            val ownerId = intent.getStringExtra("OWNER_ID") ?: ""
+            val ownerName = intent.getStringExtra("USER_NAME") ?: "User"
+            val postTitle = intent.getStringExtra("FOOD_NAME") ?: "Meal"
 
-            Toast.makeText(
-                this,
-                "Chat with $userName coming soon",
-                Toast.LENGTH_SHORT
-            ).show()
+            val currentUserId = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: ""
+
+            if (ownerId.isEmpty() || postId.isEmpty()) {
+                Toast.makeText(this, "Missing chat info", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (ownerId == currentUserId) {
+                Toast.makeText(this, "You cannot chat with yourself", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val chatIntent = Intent(this, ChatActivity::class.java)
+            chatIntent.putExtra("OTHER_USER_ID", ownerId)
+            chatIntent.putExtra("OTHER_USER_NAME", ownerName)
+            chatIntent.putExtra("POST_ID", postId)
+            chatIntent.putExtra("POST_TITLE", postTitle)
+            startActivity(chatIntent)
         }
     }
 
@@ -186,11 +197,7 @@ class FoodDetailActivity : AppCompatActivity() {
                 val callIntent = Intent(Intent.ACTION_DIAL, callUri)
                 startActivity(callIntent)
             } else {
-                Toast.makeText(
-                    this,
-                    "Phone number not available",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "Phone number not available", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -200,50 +207,51 @@ class FoodDetailActivity : AppCompatActivity() {
             if (ownerPhone.isNotEmpty()) {
                 val smsUri = Uri.parse("smsto:$ownerPhone")
                 val smsIntent = Intent(Intent.ACTION_SENDTO, smsUri)
-
-                smsIntent.putExtra(
-                    "sms_body",
-                    "Hi! I'm interested in your food listing on ShareAt."
-                )
-
+                smsIntent.putExtra("sms_body", "Hi! I'm interested in your food listing on SharEat.")
                 startActivity(smsIntent)
             } else {
-                Toast.makeText(
-                    this,
-                    "Phone number not available",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "Phone number not available", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun setupReserveButton() {
         reserveButton.setOnClickListener {
-            val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+            if (postId.isEmpty()) {
+                Toast.makeText(this, "Post ID not found", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-            builder.setTitle("Reserve This Meal")
-            builder.setMessage(
-                "Are you sure you want to reserve this meal? " +
-                        "You are confirming that you will pick it up."
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser == null) {
+                Toast.makeText(this, "You must be logged in", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val reservedBy = currentUser.uid
+            val reservedByName = currentUser.displayName ?: "User"
+            val reservedAt = System.currentTimeMillis()
+
+            val updates = hashMapOf<String, Any>(
+                "status" to "reserved",
+                "reserved_by" to reservedBy,
+                "reserved_by_name" to reservedByName,
+                "reserved_at" to reservedAt,
+                "updated_at" to reservedAt
             )
 
-            builder.setPositiveButton("Yes, Reserve") { _, _ ->
-                Toast.makeText(
-                    this,
-                    "Meal Reserved! Don't forget to pick it up.",
-                    Toast.LENGTH_LONG
-                ).show()
-
-                reserveButton.text = "✅ Reserved"
-                reserveButton.isEnabled = false
-                reserveButton.setBackgroundColor(0xFF9E9E9E.toInt())
-            }
-
-            builder.setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-
-            builder.show()
+            FirebaseFirestore.getInstance()
+                .collection("foods")
+                .document(postId)
+                .update(updates)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Meal reserved successfully", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this, HomeActivity::class.java))
+                    finish()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Failed to reserve: ${e.message}", Toast.LENGTH_LONG).show()
+                }
         }
     }
 }

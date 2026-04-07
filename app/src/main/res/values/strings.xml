@@ -9,5 +9,12 @@
     <string name="password_hint">Password</string>
     <string name="create_account">Create Account</string>
     <string name="go_to_login">Already have an account? Login</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_my_reservations">MyReservationsActivity</string>
+    <string name="title_activity_my_posts">MyPostsActivity</string>
+    <string name="title_activity_chat_message">ChatMessage</string>
+    <string name="title_activity_conversation">Conversation</string>
+    <string name="title_activity_messages">activity_messages</string>
+    <string name="title_activity_conversation_adapter">ConversationAdapter</string>
 
 </resources>
