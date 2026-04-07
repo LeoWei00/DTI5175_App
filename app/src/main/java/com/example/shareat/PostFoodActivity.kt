@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import java.io.ByteArrayOutputStream
 import java.util.Calendar
 import java.util.Locale
 
@@ -40,6 +41,7 @@ class PostFoodActivity : AppCompatActivity() {
     private lateinit var storage: FirebaseStorage
     private lateinit var storageRef: StorageReference
 
+    private var selectedImageBytes: ByteArray? = null
     private var selectedImageUri: Uri? = null
 
     private lateinit var radioDonate: RadioButton
@@ -78,7 +80,7 @@ class PostFoodActivity : AppCompatActivity() {
     private lateinit var locationPicker: ImageButton
     private lateinit var speechButton: ImageButton
 
-    private val LOCATION_PERMISSION_CODE = 100
+    private val locationPermissionCode = 100
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -86,12 +88,11 @@ class PostFoodActivity : AppCompatActivity() {
                 val imageBitmap = result.data?.extras?.get("data") as? Bitmap
                 imageBitmap?.let {
                     foodImage.setImageBitmap(it)
+
+                    val outputStream = ByteArrayOutputStream()
+                    it.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
+                    selectedImageBytes = outputStream.toByteArray()
                     selectedImageUri = null
-                    Toast.makeText(
-                        this,
-                        "Camera preview set. Gallery image is recommended for upload.",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
         }
@@ -101,6 +102,19 @@ class PostFoodActivity : AppCompatActivity() {
             uri?.let {
                 selectedImageUri = it
                 foodImage.setImageURI(it)
+
+                try {
+                    val inputStream = contentResolver.openInputStream(it)
+                    selectedImageBytes = inputStream?.readBytes()
+                    inputStream?.close()
+                } catch (e: Exception) {
+                    selectedImageBytes = null
+                    Toast.makeText(
+                        this,
+                        "Error reading selected image: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
 
@@ -123,7 +137,7 @@ class PostFoodActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
-        storage = FirebaseStorage.getInstance()
+        storage = FirebaseStorage.getInstance("gs://shareat-6573b.firebasestorage.app")
         storageRef = storage.reference
 
         initializeViews()
@@ -208,20 +222,19 @@ class PostFoodActivity : AppCompatActivity() {
     }
 
     private fun setupPostButton() {
-        val currentUser = auth.currentUser
-        val ownerName = currentUser?.displayName ?: "User"
         postDonation.setOnClickListener {
-
             val currentUser = auth.currentUser
             if (currentUser == null) {
                 Toast.makeText(this, "User not logged in", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
-            if (selectedImageUri == null) {
-                Toast.makeText(this, "Please upload a food image from gallery", Toast.LENGTH_LONG).show()
+            if (selectedImageBytes == null) {
+                Toast.makeText(this, "Please upload a food image", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
+
+            val ownerName = currentUser.displayName ?: "User"
 
             val meal = mealName.text.toString().trim()
             val selectedCategory = categorySpinner.selectedItem.toString()
@@ -334,11 +347,15 @@ class PostFoodActivity : AppCompatActivity() {
         postId: String,
         foodMap: HashMap<String, Any>
     ) {
-        val imageUri = selectedImageUri ?: return
+        val imageBytes = selectedImageBytes
+        if (imageBytes == null) {
+            Toast.makeText(this, "No image selected", Toast.LENGTH_LONG).show()
+            return
+        }
 
-        val imageRef = storageRef.child("food_images/$postId.jpg")
+        val imageRef = storage.reference.child("food_images/${postId}.jpg")
 
-        imageRef.putFile(imageUri)
+        imageRef.putBytes(imageBytes)
             .addOnSuccessListener {
                 imageRef.downloadUrl
                     .addOnSuccessListener { downloadUri ->
@@ -348,7 +365,7 @@ class PostFoodActivity : AppCompatActivity() {
                     .addOnFailureListener { e ->
                         Toast.makeText(
                             this,
-                            "Failed to get image URL: ${e.message}",
+                            "Failed to get download URL: ${e.message}",
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -356,7 +373,7 @@ class PostFoodActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Toast.makeText(
                     this,
-                    "Image upload failed: ${e.message}",
+                    "Upload failed: ${e.message}",
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -367,6 +384,9 @@ class PostFoodActivity : AppCompatActivity() {
             .document(postId)
             .set(foodMap)
             .addOnSuccessListener {
+                selectedImageBytes = null
+                selectedImageUri = null
+
                 Toast.makeText(this, "Food posted successfully", Toast.LENGTH_LONG).show()
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
@@ -410,7 +430,7 @@ class PostFoodActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_PERMISSION_CODE
+                    locationPermissionCode
                 )
             } else {
                 fetchLocation()
@@ -461,7 +481,7 @@ class PostFoodActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == LOCATION_PERMISSION_CODE) {
+        if (requestCode == locationPermissionCode) {
             if (grantResults.isNotEmpty() &&
                 grantResults[0] == PackageManager.PERMISSION_GRANTED
             ) {
@@ -499,8 +519,16 @@ class PostFoodActivity : AppCompatActivity() {
             val datePickerDialog = DatePickerDialog(
                 this,
                 { _, selectedYear, selectedMonth, selectedDay ->
-                    val formattedMonth = String.format("%02d", selectedMonth + 1)
-                    val formattedDay = String.format("%02d", selectedDay)
+                    val formattedMonth = String.format(
+                        Locale.getDefault(),
+                        "%02d",
+                        selectedMonth + 1
+                    )
+                    val formattedDay = String.format(
+                        Locale.getDefault(),
+                        "%02d",
+                        selectedDay
+                    )
                     val formattedDate = "$selectedYear-$formattedMonth-$formattedDay"
                     pickupDate.setText(formattedDate)
                 },
@@ -531,7 +559,12 @@ class PostFoodActivity : AppCompatActivity() {
         val timePickerDialog = TimePickerDialog(
             this,
             { _, selectedHour, selectedMinute ->
-                val formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
+                val formattedTime = String.format(
+                    Locale.getDefault(),
+                    "%02d:%02d",
+                    selectedHour,
+                    selectedMinute
+                )
                 targetEditText.setText(formattedTime)
             },
             hour,

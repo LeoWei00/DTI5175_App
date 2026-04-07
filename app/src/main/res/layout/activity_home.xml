@@ -7,7 +7,6 @@
     android:background="#FFFFFF"
     tools:context=".HomeActivity">
 
-    <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
@@ -20,7 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Home -->
         <LinearLayout
             android:id="@+id/navHomeContainer"
             android:layout_width="0dp"
@@ -45,7 +43,6 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Post -->
         <LinearLayout
             android:id="@+id/navPostContainer"
             android:layout_width="0dp"
@@ -70,7 +67,6 @@
                 android:textColor="#7A8A86" />
         </LinearLayout>
 
-        <!-- Chat -->
         <LinearLayout
             android:id="@+id/navChatContainer"
             android:layout_width="0dp"
@@ -94,7 +90,6 @@
                 android:textColor="#7A8A86" />
         </LinearLayout>
 
-        <!-- Profile -->
         <LinearLayout
             android:id="@+id/navProfileContainer"
             android:layout_width="0dp"
@@ -117,7 +112,6 @@
                 android:textSize="12sp"
                 android:textColor="#7A8A86" />
         </LinearLayout>
-
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -134,9 +128,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingStart="16dp"
+            android:paddingTop="28dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp">
 
-            <!-- Search Row -->
+            <TextView
+                android:id="@+id/tvSlogan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don’t waste it, share it"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#23C483"
+                android:layout_marginBottom="14dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -165,7 +171,6 @@
                     android:contentDescription="Filter" />
             </LinearLayout>
 
-            <!-- Category chips -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -233,7 +238,6 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <!-- Section title -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -259,7 +263,6 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <!-- Vertical RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerFoods"
                 android:layout_width="match_parent"
@@ -269,5 +272,18 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabReservations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="88dp"
+        android:contentDescription="My Reservations"
+        android:src="@android:drawable/ic_menu_agenda"
+        app:backgroundTint="#23C483"
+        app:tint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
