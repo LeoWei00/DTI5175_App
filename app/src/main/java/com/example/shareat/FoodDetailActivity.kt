@@ -9,9 +9,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.FirebaseFirestore
 
 class FoodDetailActivity : AppCompatActivity() {
 
+    private lateinit var db: FirebaseFirestore
     private lateinit var foodDetailImage: ImageView
     private lateinit var foodDetailName: TextView
     private lateinit var foodDetailType: TextView
@@ -32,6 +34,8 @@ class FoodDetailActivity : AppCompatActivity() {
 
     private var pickupLocation: String = ""
     private var ownerPhone: String = ""
+    private var ownerName: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +52,7 @@ class FoodDetailActivity : AppCompatActivity() {
     }
 
     private fun initializeViews() {
+        db = FirebaseFirestore.getInstance()
         foodDetailImage = findViewById(R.id.foodDetailImage)
         foodDetailName = findViewById(R.id.foodDetailName)
         foodDetailType = findViewById(R.id.foodDetailType)
@@ -68,51 +73,85 @@ class FoodDetailActivity : AppCompatActivity() {
     }
 
     private fun loadFoodDetails() {
-        val foodName = intent.getStringExtra("FOOD_NAME") ?: "Unknown"
-        val userName = intent.getStringExtra("USER_NAME") ?: "Unknown"
-        val category = intent.getStringExtra("CATEGORY") ?: ""
-        val description = intent.getStringExtra("DESCRIPTION") ?: ""
-        val quantity = intent.getStringExtra("QUANTITY") ?: ""
-        val unit = intent.getStringExtra("UNIT") ?: ""
-        val allergens = intent.getStringExtra("ALLERGENS") ?: "None"
-        val diets = intent.getStringExtra("DIETS") ?: ""
-        val location = intent.getStringExtra("LOCATION") ?: ""
-        val pickupDate = intent.getStringExtra("PICKUP_DATE") ?: ""
-        val startTime = intent.getStringExtra("START_TIME") ?: ""
-        val endTime = intent.getStringExtra("END_TIME") ?: ""
-        val type = intent.getStringExtra("TYPE") ?: "Donate"
-        val phone = intent.getStringExtra("PHONE") ?: ""
-        val imageUrl = intent.getStringExtra("IMAGE_URL") ?: ""
 
-        ownerPhone = phone
-        pickupLocation = location
+        val foodId = intent.getStringExtra("FOOD_ID")
 
-        foodDetailName.text = foodName
-        foodDetailType.text = type
-
-        if (type.equals("Sell", ignoreCase = true)) {
-            foodDetailType.setBackgroundResource(R.drawable.badge_sell)
-        } else {
-            foodDetailType.setBackgroundResource(R.drawable.badge_background)
+        if (foodId == null) {
+            Toast.makeText(this, "Error: No food ID", Toast.LENGTH_LONG).show()
+            finish()
+            return
         }
 
-        postedByUser.text = "Posted by: $userName"
-        foodDetailCategory.text = "Category: $category"
-        foodDetailDescription.text = description
-        foodDetailQuantity.text = "$quantity $unit"
-        foodDetailAllergens.text = allergens
-        foodDetailDiets.text = diets
-        foodDetailLocation.text = location
-        foodDetailPickupTime.text = "$pickupDate • $startTime - $endTime"
+        db.collection("foods")
+            .document(foodId)
+            .get()
+            .addOnSuccessListener { document ->
 
-        if (imageUrl.isNotEmpty()) {
-            Glide.with(this)
-                .load(imageUrl)
-                .placeholder(R.drawable.shareat_placeholder)
-                .into(foodDetailImage)
-        } else {
-            foodDetailImage.setImageResource(R.drawable.shareat_placeholder)
-        }
+                if (document.exists()) {
+
+                    val foodName = document.getString("title") ?: "Unknown"
+                    val userName = document.getString("owner_name") ?: "Unknown"
+                    ownerName = userName
+                    val category = document.getString("category") ?: ""
+                    val description = document.getString("description") ?: ""
+                    val quantity = document.getLong("quantity")?.toString() ?: ""
+                    val unit = document.getString("unit") ?: ""
+                    val location = document.getString("pickup_location") ?: ""
+                    val pickupDate = document.getString("pickup_date") ?: ""
+                    val startTime = document.getString("start_time") ?: ""
+                    val endTime = document.getString("end_time") ?: ""
+                    val type = document.getString("post_type") ?: "donate"
+                    val imageUrl = document.getString("image_url") ?: ""
+                    val phone = document.getString("phone") ?: ""
+                    val status = document.getString("status") ?: ""
+                    val allergensList = document.get("allergen_information") as? List<String> ?: emptyList()
+                    val dietsList = document.get("dietary_labels") as? List<String> ?: emptyList()
+
+                    val allergens = if (allergensList.isEmpty()) "None" else allergensList.joinToString(", ")
+                    val diets = dietsList.joinToString(", ")
+
+                    pickupLocation = location
+                    ownerPhone = phone
+                    if (status.equals("reserved", ignoreCase = true)) {
+                        markAsReserved()
+                    }
+                    //  SET UI
+                    foodDetailName.text = foodName
+                    foodDetailType.text = type.replaceFirstChar { it.uppercase() }
+
+                    if (type.equals("sell", ignoreCase = true)) {
+                        foodDetailType.setBackgroundResource(R.drawable.badge_sell)
+                    } else {
+                        foodDetailType.setBackgroundResource(R.drawable.badge_background)
+                    }
+
+                    postedByUser.text = "Posted by: $userName"
+                    foodDetailCategory.text = "Category: $category"
+                    foodDetailDescription.text = description
+                    foodDetailQuantity.text = "$quantity $unit"
+                    foodDetailAllergens.text = allergens
+                    foodDetailDiets.text = diets
+                    foodDetailLocation.text = location
+                    foodDetailPickupTime.text = "$pickupDate • $startTime - $endTime"
+
+                    // set IMAGE
+                    if (imageUrl.isNotEmpty()) {
+                        Glide.with(this)
+                            .load(imageUrl)
+                            .placeholder(R.drawable.shareat_placeholder)
+                            .into(foodDetailImage)
+                    } else {
+                        foodDetailImage.setImageResource(R.drawable.shareat_placeholder)
+                    }
+
+                } else {
+                    Toast.makeText(this, "Food not found", Toast.LENGTH_LONG).show()
+                    finish()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
     }
 
     private fun setupMapButton() {
@@ -120,16 +159,15 @@ class FoodDetailActivity : AppCompatActivity() {
             if (pickupLocation.isNotEmpty()) {
                 val mapUri = Uri.parse("geo:0,0?q=${Uri.encode(pickupLocation)}")
                 val mapIntent = Intent(Intent.ACTION_VIEW, mapUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
+
 
                 if (mapIntent.resolveActivity(packageManager) != null) {
                     startActivity(mapIntent)
                 } else {
-                    Toast.makeText(
-                        this,
-                        "Google Maps is not installed",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    // Google Maps app not found, open in browser instead
+                    val browserUri = Uri.parse("https://www.google.com/maps/search/?q=${Uri.encode(pickupLocation)}")
+                    val browserIntent = Intent(Intent.ACTION_VIEW, browserUri)
+                    startActivity(browserIntent)
                 }
             } else {
                 Toast.makeText(
@@ -146,16 +184,15 @@ class FoodDetailActivity : AppCompatActivity() {
             if (pickupLocation.isNotEmpty()) {
                 val directionUri = Uri.parse("google.navigation:q=${Uri.encode(pickupLocation)}")
                 val directionIntent = Intent(Intent.ACTION_VIEW, directionUri)
-                directionIntent.setPackage("com.google.android.apps.maps")
+
 
                 if (directionIntent.resolveActivity(packageManager) != null) {
                     startActivity(directionIntent)
                 } else {
-                    Toast.makeText(
-                        this,
-                        "Google Maps is not installed",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    // Google Maps app not found, open directions in browser instead
+                    val browserUri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=${Uri.encode(pickupLocation)}")
+                    val browserIntent = Intent(Intent.ACTION_VIEW, browserUri)
+                    startActivity(browserIntent)
                 }
             } else {
                 Toast.makeText(
@@ -228,15 +265,22 @@ class FoodDetailActivity : AppCompatActivity() {
             )
 
             builder.setPositiveButton("Yes, Reserve") { _, _ ->
-                Toast.makeText(
-                    this,
-                    "Meal Reserved! Don't forget to pick it up.",
-                    Toast.LENGTH_LONG
-                ).show()
+                val foodId = intent.getStringExtra("FOOD_ID") ?: return@setPositiveButton
+                db.collection("foods")
+                    .document(foodId)
+                    .update("status", "reserved")
+                    .addOnSuccessListener {
+                        // runs if Firebase update succeeded
+                        Toast.makeText(this, "Meal Reserved! Don't forget to pick it up.", Toast.LENGTH_LONG).show()
+                        markAsReserved()
+                        // ↑ now grey out the button
+                    }
+                    .addOnFailureListener { e ->
 
-                reserveButton.text = "✅ Reserved"
-                reserveButton.isEnabled = false
-                reserveButton.setBackgroundColor(0xFF9E9E9E.toInt())
+                        Toast.makeText(this, "Failed to reserve: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
+
+
             }
 
             builder.setNegativeButton("Cancel") { dialog, _ ->
@@ -245,5 +289,12 @@ class FoodDetailActivity : AppCompatActivity() {
 
             builder.show()
         }
+    }
+
+    private fun markAsReserved() {
+
+        reserveButton.text = "✅ Reserved"
+        reserveButton.isEnabled = false
+        reserveButton.setBackgroundColor(0xFF9E9E9E.toInt())
     }
 }

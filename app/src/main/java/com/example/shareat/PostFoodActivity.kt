@@ -50,6 +50,8 @@ class PostFoodActivity : AppCompatActivity() {
     private lateinit var ingredients: EditText
     private lateinit var foodDescription: EditText
 
+    private lateinit var phoneNumber: EditText
+
     private lateinit var allergenDairy: CheckBox
     private lateinit var allergenGluten: CheckBox
     private lateinit var allergenEggs: CheckBox
@@ -167,6 +169,8 @@ class PostFoodActivity : AppCompatActivity() {
         location = findViewById(R.id.location)
         locationPicker = findViewById(R.id.locationPicker)
 
+        phoneNumber = findViewById(R.id.phoneNumber)
+
         pickupDate = findViewById(R.id.pickupDate)
         startTime = findViewById(R.id.startTime)
         endTime = findViewById(R.id.endTime)
@@ -232,6 +236,7 @@ class PostFoodActivity : AppCompatActivity() {
             val pickupDateText = pickupDate.text.toString().trim()
             val startTimeText = startTime.text.toString().trim()
             val endTimeText = endTime.text.toString().trim()
+            val phoneText = phoneNumber.text.toString().trim()
 
             if (meal.isEmpty()) {
                 mealName.error = "Meal name required"
@@ -308,6 +313,7 @@ class PostFoodActivity : AppCompatActivity() {
                 "post_id" to newDocRef.id,
                 "owner_id" to currentUser.uid,
                 "owner_name" to ownerName,
+                "phone" to phoneText,
                 "title" to meal,
                 "description" to description,
                 "ingredients" to ingredientsText,

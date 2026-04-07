@@ -550,7 +550,43 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+        <!-- CONTACT INFORMATION -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact Information"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#1F2D3D"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone Number (optional)"
+                android:textStyle="bold"
+                android:textColor="#1F2D3D"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/phoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="e.g., +1 514 123 4567"
+                android:inputType="phone"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:backgroundTint="#DDE9E1" />
+
+        </LinearLayout>
         <!-- POST BUTTON -->
         <Button
             android:id="@+id/postDonation"

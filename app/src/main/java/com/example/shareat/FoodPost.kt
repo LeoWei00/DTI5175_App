@@ -1,9 +1,11 @@
 package com.example.shareat
 
 data class FoodPost(
+    var id: String = "",
     val post_id: String = "",
     val owner_id: String = "",
     val owner_name: String = "",
+    val phone: String = "",
     val image_url: String = "",
     val title: String = "",
     val description: String = "",

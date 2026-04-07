@@ -160,6 +160,7 @@ class HomeActivity : AppCompatActivity() {
 
                 for (document in result) {
                     val food = document.toObject(FoodPost::class.java)
+                    food.id = document.id
 
                     val matchesSearch =
                         food.title.lowercase().contains(lowerQuery) ||
@@ -236,7 +237,7 @@ class HomeActivity : AppCompatActivity() {
 
                         for (document in result) {
                             val food = document.toObject(FoodPost::class.java)
-
+                            food.id = document.id
                             if (!matchesSelectedFilter(food)) continue
                             if (food.pickup_location.isBlank()) continue
 

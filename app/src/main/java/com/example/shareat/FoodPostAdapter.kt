@@ -67,6 +67,7 @@ class FoodPostAdapter(
             val context = holder.itemView.context
             val intent = Intent(context, FoodDetailActivity::class.java)
 
+            intent.putExtra("FOOD_ID", food.id)
             intent.putExtra("FOOD_NAME", food.title)
             intent.putExtra("USER_NAME", if (food.owner_name.isNotEmpty()) food.owner_name else food.owner_id)
             intent.putExtra("CATEGORY", food.category)
