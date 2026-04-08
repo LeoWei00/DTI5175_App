@@ -43,6 +43,7 @@ class FoodDetailActivity : AppCompatActivity() {
 
         initializeViews()
         loadFoodDetails()
+        loadOwnerPhone()
         setupMapButton()
         setupDirectionsButton()
         setupChatButton()
@@ -85,11 +86,9 @@ class FoodDetailActivity : AppCompatActivity() {
         val pickupDate = intent.getStringExtra("PICKUP_DATE") ?: ""
         val startTime = intent.getStringExtra("START_TIME") ?: ""
         val endTime = intent.getStringExtra("END_TIME") ?: ""
-        val phone = intent.getStringExtra("PHONE") ?: ""
         val imageUrl = intent.getStringExtra("IMAGE_URL") ?: ""
         currentStatus = intent.getStringExtra("STATUS") ?: "available"
 
-        ownerPhone = phone
         pickupLocation = location
 
         foodDetailName.text = foodName
@@ -118,6 +117,31 @@ class FoodDetailActivity : AppCompatActivity() {
             reserveButton.text = "✅ Already Reserved"
             reserveButton.isEnabled = false
         }
+    }
+
+    private fun loadOwnerPhone() {
+        val ownerId = intent.getStringExtra("OWNER_ID") ?: ""
+        if (ownerId.isEmpty()) return
+
+        FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(ownerId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    ownerPhone = document.getString("phone_number") ?: ""
+                }
+
+                if (ownerPhone.isBlank()) {
+                    callButton.isEnabled = false
+                    smsButton.isEnabled = false
+                }
+            }
+            .addOnFailureListener { e ->
+                callButton.isEnabled = false
+                smsButton.isEnabled = false
+                Toast.makeText(this, "Failed to load phone: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun setupMapButton() {

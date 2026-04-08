@@ -65,6 +65,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import androidx.compose.material.icons.filled.Phone
 
 class ProfileActivity : ComponentActivity() {
 
@@ -182,6 +183,7 @@ fun ProfileScreen(
 ) {
     val fullName = remember { mutableStateOf("User") }
     val email = remember { mutableStateOf("") }
+    val phoneNumber = remember { mutableStateOf("") }
     val location = remember { mutableStateOf("SharEat Community") }
     val bio = remember {
         mutableStateOf("Helping reduce food waste and sharing meals with the community.")
@@ -209,11 +211,13 @@ fun ProfileScreen(
                     val firestoreImage = document.getString("profile_image_url")
                     val firestoreBio = document.getString("bio")
                     val firestoreLocation = document.getString("location")
+                    val firestorePhone = document.getString("phone_number")
 
                     if (!firestoreName.isNullOrEmpty()) fullName.value = firestoreName
                     if (!firestoreImage.isNullOrEmpty()) profileImageUrl.value = firestoreImage
                     if (!firestoreBio.isNullOrEmpty()) bio.value = firestoreBio
                     if (!firestoreLocation.isNullOrEmpty()) location.value = firestoreLocation
+                    if (!firestorePhone.isNullOrEmpty()) phoneNumber.value = firestorePhone
                 }
         }
     }
@@ -271,7 +275,10 @@ fun ProfileScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        AccountInfoCard(email.value)
+        AccountInfoCard(
+            email = email.value,
+            phoneNumber = phoneNumber.value
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -477,7 +484,10 @@ fun AboutMeCard(
 }
 
 @Composable
-fun AccountInfoCard(email: String) {
+fun AccountInfoCard(
+    email: String,
+    phoneNumber: String
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -505,6 +515,23 @@ fun AccountInfoCard(email: String) {
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     text = if (email.isNotEmpty()) email else "No email available",
+                    fontSize = 14.sp,
+                    color = Color.DarkGray
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Phone,
+                    contentDescription = null,
+                    tint = Color(0xFF23C483),
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = if (phoneNumber.isNotEmpty()) phoneNumber else "No phone number available",
                     fontSize = 14.sp,
                     color = Color.DarkGray
                 )
