@@ -20,6 +20,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
+import android.util.Log
+import com.google.android.gms.location.CurrentLocationRequest
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
 
 class HomeActivity : AppCompatActivity() {
 
@@ -232,54 +236,88 @@ class HomeActivity : AppCompatActivity() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             Toast.makeText(this, "Location permission is required", Toast.LENGTH_LONG).show()
+            Log.d("HOME_DEBUG", "Location permission missing")
             return
         }
 
-        fusedLocationClient.lastLocation
+        val currentLocationRequest = CurrentLocationRequest.Builder()
+            .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+            .setMaxUpdateAgeMillis(0)
+            .build()
+
+        val cancellationTokenSource = CancellationTokenSource()
+
+        fusedLocationClient.getCurrentLocation(
+            currentLocationRequest,
+            cancellationTokenSource.token
+        )
             .addOnSuccessListener { userLocation ->
                 if (userLocation == null) {
-                    Toast.makeText(this, "Unable to get your location", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Unable to get your current location", Toast.LENGTH_LONG).show()
+                    Log.d("HOME_DEBUG", "getCurrentLocation returned null")
                     return@addOnSuccessListener
                 }
+
+                Log.d(
+                    "HOME_DEBUG",
+                    "Fresh user location: lat=${userLocation.latitude}, lng=${userLocation.longitude}"
+                )
 
                 db.collection("foods")
                     .get()
                     .addOnSuccessListener { result ->
                         val filteredFoods = mutableListOf<NearbyFoodPost>()
+                        Log.d("HOME_DEBUG", "Fetched ${result.size()} food documents from Firebase")
 
                         for (document in result) {
                             val food = document.toObject(FoodPost::class.java)
 
-                            if (!matchesSelectedFilter(food)) continue
-                            if (food.pickup_location.isBlank()) continue
+                            Log.d(
+                                "HOME_DEBUG",
+                                "Checking food: title=${food.title}, pickup_location='${food.pickup_location}', lat=${food.pickup_lat}, lng=${food.pickup_lng}"
+                            )
 
-                            try {
-                                val geocoder = android.location.Geocoder(this)
-                                val addresses = geocoder.getFromLocationName(food.pickup_location, 1)
+                            if (!matchesSelectedFilter(food)) {
+                                Log.d("HOME_DEBUG", "Skipped '${food.title}' because filter did not match")
+                                continue
+                            }
 
-                                if (!addresses.isNullOrEmpty()) {
-                                    val address = addresses[0]
+                            val pickupLat = food.pickup_lat
+                            val pickupLng = food.pickup_lng
 
-                                    val results = FloatArray(1)
-                                    android.location.Location.distanceBetween(
-                                        userLocation.latitude,
-                                        userLocation.longitude,
-                                        address.latitude,
-                                        address.longitude,
-                                        results
-                                    )
+                            if (pickupLat == 0.0 && pickupLng == 0.0) {
+                                Log.d("HOME_DEBUG", "Skipped '${food.title}' because pickup coordinates are missing")
+                                continue
+                            }
 
-                                    val distanceKm = results[0] / 1000.0
+                            val results = FloatArray(1)
+                            android.location.Location.distanceBetween(
+                                userLocation.latitude,
+                                userLocation.longitude,
+                                pickupLat,
+                                pickupLng,
+                                results
+                            )
 
-                                    if (distanceKm <= MAX_DISTANCE_KM) {
-                                        filteredFoods.add(NearbyFoodPost(food, distanceKm))
-                                    }
-                                }
-                            } catch (_: Exception) {
+                            val distanceKm = results[0] / 1000.0
+
+                            Log.d(
+                                "HOME_DEBUG",
+                                "Distance to '${food.title}' = %.2f km (max allowed = %.2f km)"
+                                    .format(distanceKm, MAX_DISTANCE_KM)
+                            )
+
+                            if (distanceKm <= MAX_DISTANCE_KM) {
+                                filteredFoods.add(NearbyFoodPost(food, distanceKm))
+                                Log.d("HOME_DEBUG", "Included '${food.title}'")
+                            } else {
+                                Log.d("HOME_DEBUG", "Excluded '${food.title}' because too far")
                             }
                         }
 
                         filteredFoods.sortBy { it.distanceKm }
+
+                        Log.d("HOME_DEBUG", "Final nearby foods count: ${filteredFoods.size}")
 
                         nearbyFoodList.clear()
                         nearbyFoodList.addAll(filteredFoods)
@@ -287,6 +325,7 @@ class HomeActivity : AppCompatActivity() {
                         tvMealCount.text = "${nearbyFoodList.size} meals"
                     }
                     .addOnFailureListener { e ->
+                        Log.d("HOME_DEBUG", "Error loading foods from Firebase: ${e.message}")
                         Toast.makeText(
                             this,
                             "Error loading foods: ${e.message}",
@@ -295,9 +334,10 @@ class HomeActivity : AppCompatActivity() {
                     }
             }
             .addOnFailureListener { e ->
+                Log.d("HOME_DEBUG", "Error getting current location: ${e.message}")
                 Toast.makeText(
                     this,
-                    "Error getting location: ${e.message}",
+                    "Error getting current location: ${e.message}",
                     Toast.LENGTH_LONG
                 ).show()
             }

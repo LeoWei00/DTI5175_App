@@ -444,8 +444,11 @@
                     android:layout_width="0dp"
                     android:layout_height="52dp"
                     android:layout_weight="1"
-                    android:hint="e.g., Campus Housing Building A"
-                    android:inputType="textPostalAddress"
+                    android:hint="Search for a pickup location"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:cursorVisible="false"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
                     android:backgroundTint="#DDE9E1" />

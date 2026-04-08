@@ -1,5 +1,4 @@
 package com.example.shareat
-
 import android.Manifest
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -33,6 +32,16 @@ import com.google.firebase.storage.StorageReference
 import java.io.ByteArrayOutputStream
 import java.util.Calendar
 import java.util.Locale
+import android.util.Log
+
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.AutocompletePrediction
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.PlaceAutocomplete
+import com.google.android.libraries.places.widget.PlaceAutocompleteActivity
 
 class PostFoodActivity : AppCompatActivity() {
 
@@ -40,6 +49,8 @@ class PostFoodActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
     private lateinit var storageRef: StorageReference
+
+    private lateinit var placesClient: PlacesClient
 
     private var selectedImageBytes: ByteArray? = null
     private var selectedImageUri: Uri? = null
@@ -79,6 +90,10 @@ class PostFoodActivity : AppCompatActivity() {
     private lateinit var foodImage: ImageView
     private lateinit var locationPicker: ImageButton
     private lateinit var speechButton: ImageButton
+
+    private var selectedPickupLat: Double? = null
+    private var selectedPickupLng: Double? = null
+    private var selectedPickupPlaceId: String? = null
 
     private val locationPermissionCode = 100
 
@@ -131,9 +146,75 @@ class PostFoodActivity : AppCompatActivity() {
             }
         }
 
+    private val placeAutocompleteLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val intent = result.data
+
+            if (intent != null && result.resultCode == PlaceAutocompleteActivity.RESULT_OK) {
+                val prediction =
+                    PlaceAutocomplete.getPredictionFromIntent(intent) ?: return@registerForActivityResult
+
+                val sessionToken: AutocompleteSessionToken? =
+                    PlaceAutocomplete.getSessionTokenFromIntent(intent)
+
+                val request = FetchPlaceRequest.builder(
+                    prediction.placeId,
+                    listOf(
+                        Place.Field.ID,
+                        Place.Field.DISPLAY_NAME,
+                        Place.Field.FORMATTED_ADDRESS,
+                        Place.Field.LOCATION
+                    )
+                ).apply {
+                    if (sessionToken != null) {
+                        setSessionToken(sessionToken)
+                    }
+                }.build()
+
+                placesClient.fetchPlace(request)
+                    .addOnSuccessListener { response ->
+                        val place = response.place
+
+                        val addressText =
+                            place.formattedAddress ?: place.displayName ?: ""
+
+                        location.setText(addressText)
+                        selectedPickupPlaceId = place.id
+                        selectedPickupLat = place.location?.latitude
+                        selectedPickupLng = place.location?.longitude
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(
+                            this,
+                            "Failed to load place details: ${e.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+            } else if (intent != null && result.resultCode == PlaceAutocompleteActivity.RESULT_ERROR) {
+                val status = PlaceAutocomplete.getResultStatusFromIntent(intent)
+                Toast.makeText(
+                    this,
+                    "Location search failed: ${status?.statusMessage ?: "Unknown error"}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_food)
+
+        if (!Places.isInitialized()) {
+            val apiKey = "AIzaSyDt7lfs0_gqDSu9NM-isYa-K6k0clD9AMs"
+            if (apiKey.isEmpty()) {
+                Toast.makeText(this, "Missing Places API key", Toast.LENGTH_LONG).show()
+                finish()
+                return
+            }
+            Places.initializeWithNewPlacesApiEnabled(applicationContext, apiKey)
+        }
+        placesClient = Places.createClient(this)
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
@@ -272,8 +353,8 @@ class PostFoodActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (pickupLocation.isEmpty()) {
-                location.error = "Pickup location required"
+            if (pickupLocation.isEmpty() || selectedPickupLat == null || selectedPickupLng == null) {
+                location.error = "Please select a valid pickup location"
                 location.requestFocus()
                 return@setOnClickListener
             }
@@ -331,6 +412,9 @@ class PostFoodActivity : AppCompatActivity() {
                 "dietary_labels" to dietaryLabels,
                 "allergen_information" to allergenInformation,
                 "pickup_location" to pickupLocation,
+                "pickup_lat" to selectedPickupLat!!,
+                "pickup_lng" to selectedPickupLng!!,
+                "pickup_place_id" to (selectedPickupPlaceId ?: ""),
                 "pickup_date" to pickupDateText,
                 "start_time" to startTimeText,
                 "end_time" to endTimeText,
@@ -422,20 +506,22 @@ class PostFoodActivity : AppCompatActivity() {
     }
 
     private fun setupLocationPicker() {
-        locationPicker.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    locationPermissionCode
-                )
-            } else {
-                fetchLocation()
+        val openPlaceAutocomplete = {
+            val sessionToken = AutocompleteSessionToken.newInstance()
+
+            val autocompleteIntent = PlaceAutocomplete.createIntent(this) {
+                setAutocompleteSessionToken(sessionToken)
             }
+
+            placeAutocompleteLauncher.launch(autocompleteIntent)
+        }
+
+        location.setOnClickListener {
+            openPlaceAutocomplete()
+        }
+
+        locationPicker.setOnClickListener {
+            openPlaceAutocomplete()
         }
     }
 
