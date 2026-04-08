@@ -17,7 +17,7 @@ class MyPostsActivity : AppCompatActivity() {
     private lateinit var btnBack: ImageButton
 
     private lateinit var db: FirebaseFirestore
-    private lateinit var myPostsList: MutableList<FoodPost>
+    private lateinit var myPostsList: MutableList<NearbyFoodPost>
     private lateinit var adapter: FoodPostAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,32 +43,21 @@ class MyPostsActivity : AppCompatActivity() {
     }
 
     private fun loadMyPosts() {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser == null) {
-            Toast.makeText(this, "You must be logged in", Toast.LENGTH_LONG).show()
-            return
-        }
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         db.collection("foods")
-            .whereEqualTo("owner_id", currentUser.uid)
+            .whereEqualTo("owner_id", currentUserId)
             .get()
             .addOnSuccessListener { result ->
                 myPostsList.clear()
 
                 for (document in result) {
                     val food = document.toObject(FoodPost::class.java)
-                    myPostsList.add(food)
+                    myPostsList.add(NearbyFoodPost(food, -1.0))
                 }
 
                 adapter.notifyDataSetChanged()
-                tvMyPostsCount.text = myPostsList.size.toString() + " meals"
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(
-                    this,
-                    "Error loading your meals: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                tvMyPostsCount.text = "${myPostsList.size} meals"
             }
     }
 }

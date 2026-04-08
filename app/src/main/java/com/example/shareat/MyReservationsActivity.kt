@@ -17,7 +17,7 @@ class MyReservationsActivity : AppCompatActivity() {
     private lateinit var btnBack: ImageButton
 
     private lateinit var db: FirebaseFirestore
-    private lateinit var reservationList: MutableList<FoodPost>
+    private lateinit var reservationList: MutableList<NearbyFoodPost>
     private lateinit var adapter: FoodPostAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,11 +57,11 @@ class MyReservationsActivity : AppCompatActivity() {
 
                 for (document in result) {
                     val food = document.toObject(FoodPost::class.java)
-                    reservationList.add(food)
+                    reservationList.add(NearbyFoodPost(food, -1.0))
                 }
 
                 adapter.notifyDataSetChanged()
-                tvReservationCount.text = reservationList.size.toString() + " reservations"
+                tvReservationCount.text = "${reservationList.size} reservations"
             }
             .addOnFailureListener { e ->
                 Toast.makeText(
