@@ -88,6 +88,8 @@ class FoodPostAdapter(
             intent.putExtra("IMAGE_URL", food.image_url)
             intent.putExtra("STATUS", food.status)
             intent.putExtra("OWNER_ID", food.owner_id)
+            intent.putExtra("RESERVED_BY", food.reserved_by)
+            intent.putExtra("RESERVED_BY_NAME", food.reserved_by_name)
 
             context.startActivity(intent)
         }

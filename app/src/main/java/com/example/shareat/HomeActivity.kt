@@ -43,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var adapter: FoodPostAdapter
 
     private val LOCATION_PERMISSION_CODE = 200
-    private val MAX_DISTANCE_KM = 1.5
+    private val MAX_DISTANCE_KM = 10.0
 
     private val filterOptions = arrayOf(
         "All",

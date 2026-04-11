@@ -26,9 +26,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginBottom="8dp"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/foodDetailName"
@@ -36,228 +36,228 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Pasta Carbonara"
+                    android:textColor="#1E2B27"
                     android:textSize="26sp"
-                    android:textStyle="bold"
-                    android:textColor="#1E2B27" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/foodDetailType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Donate"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="#FFFFFF"
+                    android:layout_marginStart="8dp"
                     android:background="@drawable/badge_background"
                     android:paddingStart="14dp"
-                    android:paddingEnd="14dp"
                     android:paddingTop="6dp"
+                    android:paddingEnd="14dp"
                     android:paddingBottom="6dp"
-                    android:layout_marginStart="8dp" />
+                    android:text="Donate"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/postedByUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
                 android:text="Posted by: John Doe"
-                android:textSize="14sp"
                 android:textColor="#63706C"
-                android:layout_marginBottom="6dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/foodDetailCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:text="Category: Italian"
-                android:textSize="14sp"
                 android:textColor="#23C483"
-                android:textStyle="bold"
-                android:layout_marginBottom="10dp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/foodDetailDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fresh homemade pasta with creamy sauce"
-                android:textSize="15sp"
-                android:textColor="#424242"
+                android:layout_marginBottom="16dp"
                 android:lineSpacingExtra="4dp"
-                android:layout_marginBottom="16dp" />
+                android:text="Fresh homemade pasta with creamy sauce"
+                android:textColor="#424242"
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/info_background"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:text="🍽️"
-                        android:textSize="20sp"
-                        android:layout_marginEnd="10dp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:text="Quantity"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
                         android:textColor="#424242"
-                        android:layout_marginEnd="8dp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/foodDetailQuantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="5 servings"
-                        android:textSize="14sp"
-                        android:textColor="#616161" />
+                        android:textColor="#616161"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#E0E0E0"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"
+                    android:background="#E0E0E0" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:text="⚠️"
-                        android:textSize="20sp"
-                        android:layout_marginEnd="10dp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:text="Allergens"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
                         android:textColor="#D32F2F"
-                        android:layout_marginEnd="8dp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/foodDetailAllergens"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Dairy, Gluten, Eggs"
-                        android:textSize="14sp"
-                        android:textColor="#D32F2F" />
+                        android:textColor="#D32F2F"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#E0E0E0"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"
+                    android:background="#E0E0E0" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:text="🥗"
-                        android:textSize="20sp"
-                        android:layout_marginEnd="10dp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:text="Dietary"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
                         android:textColor="#388E3C"
-                        android:layout_marginEnd="8dp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/foodDetailDiets"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Vegetarian"
-                        android:textSize="14sp"
-                        android:textColor="#388E3C" />
+                        android:textColor="#388E3C"
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/info_background"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:text="📍"
-                        android:textSize="20sp"
-                        android:layout_marginEnd="10dp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/foodDetailLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="123 Main Street, Toronto"
-                        android:textSize="14sp"
-                        android:textColor="#424242" />
+                        android:textColor="#424242"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#E0E0E0"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"
+                    android:background="#E0E0E0" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:text="🕐"
-                        android:textSize="20sp"
-                        android:layout_marginEnd="10dp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/foodDetailPickupTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Jan 20, 10:00 AM - 2:00 PM"
-                        android:textSize="14sp"
-                        android:textColor="#424242" />
+                        android:textColor="#424242"
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -265,73 +265,110 @@
                 android:id="@+id/viewOnMapButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="📍  View on Map"
-                android:textSize="16sp"
-                android:textColor="#FFFFFF"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/button_green"
-                android:layout_marginBottom="12dp" />
+                android:text="📍  View on Map"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/getDirectionsButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="🧭  Get Directions"
-                android:textSize="16sp"
-                android:textColor="#FFFFFF"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/button_green"
-                android:layout_marginBottom="16dp" />
+                android:text="🧭  Get Directions"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/chatButton"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1"
-                    android:text="✉️ Message"
-                    android:textSize="14sp"
-                    android:textColor="#FFFFFF"
                     android:backgroundTint="#23C483"
-                    android:layout_marginEnd="4dp" />
+                    android:text="✉️ Message"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
 
                 <Button
                     android:id="@+id/callButton"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="📞 Call"
-                    android:textSize="14sp"
-                    android:textColor="#FFFFFF"
-                    android:backgroundTint="#FF8A3D"
                     android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp" />
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#FF8A3D"
+                    android:text="📞 Call"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
 
                 <Button
                     android:id="@+id/smsButton"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:layout_marginStart="4dp"
                     android:layout_weight="1"
-                    android:text="✉️ SMS"
-                    android:textSize="14sp"
-                    android:textColor="#FFFFFF"
                     android:backgroundTint="#607D8B"
-                    android:layout_marginStart="4dp" />
+                    android:text="✉️ SMS"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/reserveButton"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#23C483"
                 android:text="🍽️  Reserve This Meal"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/cancelReserveButton"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#E53935"
+                android:text="❌  Cancel Reservation"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/confirmPickupButton"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#1565C0"
+                android:text="✅  Confirm Pickup"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#23C483"
-                android:layout_marginBottom="16dp" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/expiredButton"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#9E9E9E"
+                android:enabled="false"
+                android:text="😔 Sorry, this food has expired"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
         </LinearLayout>
     </LinearLayout>

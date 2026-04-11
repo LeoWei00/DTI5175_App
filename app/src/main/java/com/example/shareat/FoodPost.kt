@@ -22,9 +22,9 @@ data class FoodPost(
     val end_time: String = "",
     val post_type: String = "",
     val status: String = "",
-    val reserved_by: String = "",
-    val reserved_by_name: String = "",
-    val reserved_at: Long = 0L,
+    val reserved_by: String? = null,
+    val reserved_by_name: String? = null,
+    val reserved_at: Long? = null,
     val created_at: Long = 0L,
     val updated_at: Long = 0L
 )
