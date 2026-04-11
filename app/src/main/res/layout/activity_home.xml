@@ -171,72 +171,7 @@
                     android:contentDescription="Filter" />
             </LinearLayout>
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:scrollbars="none">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/chipAll"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:text="All"
-                        android:textAllCaps="false"
-                        android:textColor="#FFFFFF"
-                        android:backgroundTint="#23C483"
-                        android:minHeight="40dp" />
-
-                    <Button
-                        android:id="@+id/chipHomemade"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="8dp"
-                        android:text="Homemade"
-                        android:textAllCaps="false"
-                        android:textColor="#33413D"
-                        android:backgroundTint="#F3F5F4"
-                        android:minHeight="40dp" />
-
-                    <Button
-                        android:id="@+id/chipVegetarian"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="8dp"
-                        android:text="Vegetarian"
-                        android:textAllCaps="false"
-                        android:textColor="#33413D"
-                        android:backgroundTint="#F3F5F4"
-                        android:minHeight="40dp" />
-
-                    <Button
-                        android:id="@+id/chipBakedGoods"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="8dp"
-                        android:text="Baked Goods"
-                        android:textAllCaps="false"
-                        android:textColor="#33413D"
-                        android:backgroundTint="#F3F5F4"
-                        android:minHeight="40dp" />
-
-                    <Button
-                        android:id="@+id/chipVegan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="8dp"
-                        android:text="Vegan"
-                        android:textAllCaps="false"
-                        android:textColor="#33413D"
-                        android:backgroundTint="#F3F5F4"
-                        android:minHeight="40dp" />
-                </LinearLayout>
-            </HorizontalScrollView>
 
             <LinearLayout
                 android:layout_width="match_parent"
