@@ -216,7 +216,7 @@ class HomeActivity : AppCompatActivity() {
                                 food.dietary_labels.any { it.lowercase().contains(lowerQuery) } ||
                                 food.allergen_information.any { it.lowercase().contains(lowerQuery) }
 
-                    if (matchesSearch && matchesSelectedFilter(food) && !isExpired(food.pickup_date, food.end_time)) {
+                    if (matchesSearch && matchesSelectedFilter(food) && !isExpired(food.pickup_date, food.end_time) && !isConfirmed(food)) {
                         matchedFoods.add(NearbyFoodPost(food, -1.0))
                     }
                 }
@@ -307,6 +307,11 @@ class HomeActivity : AppCompatActivity() {
 
                             if (isExpired(food.pickup_date, food.end_time)) {
                                 Log.d("HOME_DEBUG", "Skipped '${food.title}' because it is expired")
+                                continue
+                            }
+
+                            if (isConfirmed(food)) {
+                                Log.d("HOME_DEBUG", "Skipped '${food.title}' because it is confirmed")
                                 continue
                             }
 
@@ -406,6 +411,10 @@ class HomeActivity : AppCompatActivity() {
         } catch (e: Exception) {
             false
         }
+    }
+
+    private fun isConfirmed(food: FoodPost): Boolean {
+        return food.status.equals("confirmed", ignoreCase = true)
     }
 
     override fun onResume() {

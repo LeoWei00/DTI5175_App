@@ -365,6 +365,29 @@ class PostFoodActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            val dateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            dateFormat.isLenient = false
+
+            val selectedDate = dateFormat.parse(pickupDateText)
+            val today = java.util.Calendar.getInstance().apply {
+                set(java.util.Calendar.HOUR_OF_DAY, 0)
+                set(java.util.Calendar.MINUTE, 0)
+                set(java.util.Calendar.SECOND, 0)
+                set(java.util.Calendar.MILLISECOND, 0)
+            }.time
+
+            if (selectedDate == null) {
+                pickupDate.error = "Invalid pickup date"
+                pickupDate.requestFocus()
+                return@setOnClickListener
+            }
+
+            if (selectedDate.before(today)) {
+                pickupDate.error = "Pickup date cannot be earlier than today"
+                pickupDate.requestFocus()
+                return@setOnClickListener
+            }
+
             if (startTimeText.isEmpty()) {
                 startTime.error = "Start time required"
                 startTime.requestFocus()
@@ -373,6 +396,23 @@ class PostFoodActivity : AppCompatActivity() {
 
             if (endTimeText.isEmpty()) {
                 endTime.error = "End time required"
+                endTime.requestFocus()
+                return@setOnClickListener
+            }
+
+            val timeFormat = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault())
+            timeFormat.isLenient = false
+
+            val start = timeFormat.parse(startTimeText)
+            val end = timeFormat.parse(endTimeText)
+
+            if (start == null || end == null) {
+                Toast.makeText(this, "Invalid time format", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            if (!start.before(end)) {
+                endTime.error = "End time must be later than start time"
                 endTime.requestFocus()
                 return@setOnClickListener
             }
