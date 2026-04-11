@@ -42,6 +42,29 @@ class MyReservationsActivity : AppCompatActivity() {
         loadReservations()
     }
 
+    private fun isExpired(pickupDate: String, endTime: String): Boolean {
+        return try {
+            val dateTimeFormat = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
+            val expiryDateTime = dateTimeFormat.parse("$pickupDate $endTime") ?: return false
+            java.util.Date().after(expiryDateTime)
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun finishReservationRefresh(expiredRemovedCount: Int) {
+        adapter.notifyDataSetChanged()
+        tvReservationCount.text = "${reservationList.size} reservations"
+
+        if (expiredRemovedCount > 0) {
+            Toast.makeText(
+                this,
+                "$expiredRemovedCount expired reservation(s) were removed.",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
     private fun loadReservations() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser == null) {
@@ -55,13 +78,45 @@ class MyReservationsActivity : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 reservationList.clear()
 
-                for (document in result) {
-                    val food = document.toObject(FoodPost::class.java)
-                    reservationList.add(NearbyFoodPost(food, -1.0))
+                var expiredRemovedCount = 0
+                var processedCount = 0
+                val totalCount = result.size()
+
+                if (totalCount == 0) {
+                    adapter.notifyDataSetChanged()
+                    tvReservationCount.text = "0 reservations"
+                    return@addOnSuccessListener
                 }
 
-                adapter.notifyDataSetChanged()
-                tvReservationCount.text = "${reservationList.size} reservations"
+                for (document in result) {
+                    val food = document.toObject(FoodPost::class.java)
+
+                    if (isExpired(food.pickup_date, food.end_time)) {
+                        document.reference.update(
+                            mapOf(
+                                "status" to "available",
+                                "reserved_by" to "",
+                                "reserved_by_name" to "",
+                                "reserved_at" to 0L,
+                                "updated_at" to System.currentTimeMillis()
+                            )
+                        ).addOnCompleteListener {
+                            expiredRemovedCount++
+                            processedCount++
+
+                            if (processedCount == totalCount) {
+                                finishReservationRefresh(expiredRemovedCount)
+                            }
+                        }
+                    } else {
+                        reservationList.add(NearbyFoodPost(food, -1.0))
+                        processedCount++
+
+                        if (processedCount == totalCount) {
+                            finishReservationRefresh(expiredRemovedCount)
+                        }
+                    }
+                }
             }
             .addOnFailureListener { e ->
                 Toast.makeText(

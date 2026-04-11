@@ -43,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var adapter: FoodPostAdapter
 
     private val LOCATION_PERMISSION_CODE = 200
-    private val MAX_DISTANCE_KM = 1.5
+    private val MAX_DISTANCE_KM = 10.0
 
     private val filterOptions = arrayOf(
         "All",
@@ -57,7 +57,7 @@ class HomeActivity : AppCompatActivity() {
         "Baked Goods"
     )
 
-    private var selectedFilter = "All"
+    private val selectedFilters = mutableSetOf<String>("All")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,13 +110,36 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showFilterDialog() {
-        val checkedItem = filterOptions.indexOf(selectedFilter).coerceAtLeast(0)
+        val checkedItems = BooleanArray(filterOptions.size) { index ->
+            selectedFilters.contains(filterOptions[index])
+        }
 
         AlertDialog.Builder(this)
             .setTitle("Filter foods")
-            .setSingleChoiceItems(filterOptions, checkedItem) { dialog, which ->
-                selectedFilter = filterOptions[which]
-                dialog.dismiss()
+            .setMultiChoiceItems(filterOptions, checkedItems) { _, which, isChecked ->
+                val option = filterOptions[which]
+
+                if (option == "All") {
+                    if (isChecked) {
+                        selectedFilters.clear()
+                        selectedFilters.add("All")
+                        for (i in checkedItems.indices) checkedItems[i] = (i == which)
+                    } else {
+                        selectedFilters.remove("All")
+                    }
+                } else {
+                    if (isChecked) {
+                        selectedFilters.remove("All")
+                        selectedFilters.add(option)
+                    } else {
+                        selectedFilters.remove(option)
+                    }
+                }
+            }
+            .setPositiveButton("Apply") { _, _ ->
+                if (selectedFilters.isEmpty()) {
+                    selectedFilters.add("All")
+                }
                 refreshCurrentMode()
             }
             .setNegativeButton("Cancel", null)
@@ -153,17 +176,22 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun matchesSelectedFilter(food: FoodPost): Boolean {
-        return when (selectedFilter) {
-            "All" -> true
-            "Donate only" -> food.post_type.equals("donate", ignoreCase = true)
-            "Sell only" -> food.post_type.equals("sell", ignoreCase = true)
-            "Vegetarian" -> food.dietary_labels.any { it.equals("Vegetarian", ignoreCase = true) }
-            "Vegan" -> food.dietary_labels.any { it.equals("Vegan", ignoreCase = true) }
-            "Halal" -> food.dietary_labels.any { it.equals("Halal", ignoreCase = true) }
-            "Gluten-Free" -> food.dietary_labels.any { it.equals("Gluten-Free", ignoreCase = true) }
-            "Homemade" -> food.category.equals("Homemade", ignoreCase = true)
-            "Baked Goods" -> food.category.equals("Baked Goods", ignoreCase = true)
-            else -> true
+        if (selectedFilters.isEmpty() || selectedFilters.contains("All")) {
+            return true
+        }
+
+        return selectedFilters.all { filter ->
+            when (filter) {
+                "Donate only" -> food.post_type.equals("donate", ignoreCase = true)
+                "Sell only" -> food.post_type.equals("sell", ignoreCase = true)
+                "Vegetarian" -> food.dietary_labels.any { it.equals("Vegetarian", ignoreCase = true) }
+                "Vegan" -> food.dietary_labels.any { it.equals("Vegan", ignoreCase = true) }
+                "Halal" -> food.dietary_labels.any { it.equals("Halal", ignoreCase = true) }
+                "Gluten-Free" -> food.dietary_labels.any { it.equals("Gluten-Free", ignoreCase = true) }
+                "Homemade" -> food.category.equals("Homemade", ignoreCase = true)
+                "Baked Goods" -> food.category.equals("Baked Goods", ignoreCase = true)
+                else -> true
+            }
         }
     }
 
@@ -188,7 +216,7 @@ class HomeActivity : AppCompatActivity() {
                                 food.dietary_labels.any { it.lowercase().contains(lowerQuery) } ||
                                 food.allergen_information.any { it.lowercase().contains(lowerQuery) }
 
-                    if (matchesSearch && matchesSelectedFilter(food)) {
+                    if (matchesSearch && matchesSelectedFilter(food) && !isExpired(food.pickup_date, food.end_time) && !isConfirmed(food)) {
                         matchedFoods.add(NearbyFoodPost(food, -1.0))
                     }
                 }
@@ -277,6 +305,16 @@ class HomeActivity : AppCompatActivity() {
                                 "Checking food: title=${food.title}, pickup_location='${food.pickup_location}', lat=${food.pickup_lat}, lng=${food.pickup_lng}"
                             )
 
+                            if (isExpired(food.pickup_date, food.end_time)) {
+                                Log.d("HOME_DEBUG", "Skipped '${food.title}' because it is expired")
+                                continue
+                            }
+
+                            if (isConfirmed(food)) {
+                                Log.d("HOME_DEBUG", "Skipped '${food.title}' because it is confirmed")
+                                continue
+                            }
+
                             if (!matchesSelectedFilter(food)) {
                                 Log.d("HOME_DEBUG", "Skipped '${food.title}' because filter did not match")
                                 continue
@@ -363,6 +401,20 @@ class HomeActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    private fun isExpired(pickupDate: String, endTime: String): Boolean {
+        return try {
+            val dateTimeFormat = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
+            val expiryDateTime = dateTimeFormat.parse("$pickupDate $endTime") ?: return false
+            java.util.Date().after(expiryDateTime)
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun isConfirmed(food: FoodPost): Boolean {
+        return food.status.equals("confirmed", ignoreCase = true)
     }
 
     override fun onResume() {
